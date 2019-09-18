@@ -5,6 +5,7 @@
 #include<fstream>
 #include<cstdlib>
 #include<ctime>
+#include<QMessageBox>
 #include"MakeArr.h"
 #include "WorkWithFile.h"
 
@@ -32,17 +33,16 @@ void MainWindow::on_ButtonStart_clicked()
     //Инциализация массива
     srand(time(NULL));
     unsigned n = (rand() % 10) + 1;
-
     int *array = MakeArray(n);
 
     array = IncArray(array, n,
         [](int x, int y)->int {return rand();});
 
     OutArray(array, n,
-        [](int x, int y)->int {cout << "Array[" << y << "] = " << x << endl; return 0;});
-
-
-    cout << "\nРабота с файлом" << endl;
+        [](int x, int y)->int {
+        ui->LabelFirstArray->setText(QString::number(x));
+        return 0;
+    });
 
 
     //Работа с файлом
@@ -55,33 +55,48 @@ void MainWindow::on_ButtonStart_clicked()
         ArrFil.close();
 
 
-        cout << "Изменяем массив" << endl << endl;
-
+        //Изменяем массив
         array = IncArray(array, n,
             [](int x, int y)->int {return rand();});
 
         OutArray(array, n,
-            [](int x, int y)->int {cout << "Array[" << y << "] = " << x << endl; return 0;});
+            [](int x, int y)->int {
+            ui->LabelSecondArray->setText(QString::number(x));
+            return 0;
+        });
 
 
-        cout << endl << "Считываем массив из файла" << endl << endl;
-
+        //Считываем массив из файла
         ifstream ArrFil;
         ArrFil.open("C:\Array_file.txt");
 
         array = fileToArray(ArrFil);
 
         OutArray(array, n,
-            [](int x, int y)->int {cout << "Array[" << y << "] = " << x << endl; return 0;});
+            [](int x, int y)->int {
+            ui->LabelFileToArray->setText(QString::number(x));
+            return 0;
+        });
+
+        ArrFil.close();
     }
     catch (int e)
     {
         if (e == 1)
-            cout << "Ошибка при окрытии файла на запись" << endl;
+        {
+            QMessageBox::warning(this, "Внимание", "Ошибка при окрытии файла на запись");
+            close();
+        }
         else if (e == 2)
-            cout << "Ошибка при окрытии файла на чтение" << endl;
+        {
+            QMessageBox::warning(this, "Внимание", "Ошибка при окрытии файла на чтение");
+            close();
+        }
         else
-            cout << "Файл пуст" << endl;
+        {
+            QMessageBox::warning(this, "Внимание", "Файл пуст");
+            close();
+        }
     }
 
     delete[] array;
