@@ -16,6 +16,10 @@ QtApplication {
     ]
 
     files: [
+        "MakeArr.cpp",
+        "MakeArr.h",
+        "WorkWithFile.cpp",
+        "WorkWithFile.h",
         "main.cpp",
         "mainwindow.cpp",
         "mainwindow.h",
