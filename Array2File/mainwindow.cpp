@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include<iostream>
-#include<cmath>
 #include<fstream>
 #include<cstdlib>
 #include<ctime>
 #include<QMessageBox>
+#include<functional>
 #include"MakeArr.h"
 #include "WorkWithFile.h"
 
@@ -24,25 +24,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void OutArrayInTextEdin(int *Arr, unsigned n, function<void(int, int)> Out)
+{
+    for(int i = 0; i < n; i++)
+    {
+        Out(Arr[i], i);
+    }
+}
 
 void MainWindow::on_ButtonStart_clicked()
 {
     setlocale(0, "");
-
 
     //Инциализация массива
     srand(time(NULL));
     unsigned n = (rand() % 10) + 1;
     int *array = MakeArray(n);
 
+
     array = IncArray(array, n,
         [](int x, int y)->int {return rand();});
 
-    OutArray(array, n,
-        [](int x, int y)->int {
-        ui->LabelFirstArray->setText(QString::number(x));
-        return 0;
-    });
+    OutArrayInTextEdin(array, n,
+                       [=](int Arr, int i)
+                       {
+                            ui->TextEFirstArray->append("Array[" + QString::number(i) + "] = " +
+                            QString::number(Arr));
+                       });
 
 
     //Работа с файлом
@@ -59,11 +67,12 @@ void MainWindow::on_ButtonStart_clicked()
         array = IncArray(array, n,
             [](int x, int y)->int {return rand();});
 
-        OutArray(array, n,
-            [](int x, int y)->int {
-            ui->LabelSecondArray->setText(QString::number(x));
-            return 0;
-        });
+        OutArrayInTextEdin(array, n,
+                           [=](int Arr, int i)
+                           {
+                                ui->TextESecondArray->append("Array[" + QString::number(i) + "] = " +
+                                QString::number(Arr));
+                           });
 
 
         //Считываем массив из файла
@@ -72,11 +81,12 @@ void MainWindow::on_ButtonStart_clicked()
 
         array = fileToArray(ArrFil);
 
-        OutArray(array, n,
-            [](int x, int y)->int {
-            ui->LabelFileToArray->setText(QString::number(x));
-            return 0;
-        });
+        OutArrayInTextEdin(array, n,
+                           [=](int Arr, int i)
+                           {
+                                ui->TextEFileToArray->append("Array[" + QString::number(i) + "] = " +
+                                QString::number(Arr));
+                           });
 
         ArrFil.close();
     }
