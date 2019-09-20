@@ -1,10 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include<iostream>
-#include<cmath>
 #include<fstream>
 #include<cstdlib>
 #include<ctime>
+#include<QMessageBox>
+#include<functional>
 #include"MakeArr.h"
 #include "WorkWithFile.h"
 
@@ -23,26 +24,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void OutArrayInTextEdin(int *Arr, unsigned n, function<void(int, int)> Out)
+{
+    for(int i = 0; i < n; i++)
+    {
+        Out(Arr[i], i);
+    }
+}
 
 void MainWindow::on_ButtonStart_clicked()
 {
     setlocale(0, "");
 
-
     //Инциализация массива
     srand(time(NULL));
     unsigned n = (rand() % 10) + 1;
-
     int *array = MakeArray(n);
+
 
     array = IncArray(array, n,
         [](int x, int y)->int {return rand();});
 
-    OutArray(array, n,
-        [](int x, int y)->int {cout << "Array[" << y << "] = " << x << endl; return 0;});
-
-
-    cout << "\nРабота с файлом" << endl;
+    OutArrayInTextEdin(array, n,
+                       [=](int Arr, int i)
+                       {
+                            ui->TextEFirstArray->append("Array[" + QString::number(i) + "] = " +
+                            QString::number(Arr));
+                       });
 
 
     //Работа с файлом
@@ -55,33 +63,50 @@ void MainWindow::on_ButtonStart_clicked()
         ArrFil.close();
 
 
-        cout << "Изменяем массив" << endl << endl;
-
+        //Изменяем массив
         array = IncArray(array, n,
             [](int x, int y)->int {return rand();});
 
-        OutArray(array, n,
-            [](int x, int y)->int {cout << "Array[" << y << "] = " << x << endl; return 0;});
+        OutArrayInTextEdin(array, n,
+                           [=](int Arr, int i)
+                           {
+                                ui->TextESecondArray->append("Array[" + QString::number(i) + "] = " +
+                                QString::number(Arr));
+                           });
 
 
-        cout << endl << "Считываем массив из файла" << endl << endl;
-
+        //Считываем массив из файла
         ifstream ArrFil;
         ArrFil.open("C:\Array_file.txt");
 
         array = fileToArray(ArrFil);
 
-        OutArray(array, n,
-            [](int x, int y)->int {cout << "Array[" << y << "] = " << x << endl; return 0;});
+        OutArrayInTextEdin(array, n,
+                           [=](int Arr, int i)
+                           {
+                                ui->TextEFileToArray->append("Array[" + QString::number(i) + "] = " +
+                                QString::number(Arr));
+                           });
+
+        ArrFil.close();
     }
     catch (int e)
     {
         if (e == 1)
-            cout << "Ошибка при окрытии файла на запись" << endl;
+        {
+            QMessageBox::warning(this, "Внимание", "Ошибка при окрытии файла на запись");
+            close();
+        }
         else if (e == 2)
-            cout << "Ошибка при окрытии файла на чтение" << endl;
+        {
+            QMessageBox::warning(this, "Внимание", "Ошибка при окрытии файла на чтение");
+            close();
+        }
         else
-            cout << "Файл пуст" << endl;
+        {
+            QMessageBox::warning(this, "Внимание", "Файл пуст");
+            close();
+        }
     }
 
     delete[] array;
