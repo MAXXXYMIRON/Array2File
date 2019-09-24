@@ -18,8 +18,6 @@ public:
 private slots:
     void on_ButtonStart_clicked();
 
-    void on_spinBoxValue_valueChanged(int arg1);
-
 private:
     unsigned n;
     int *array;

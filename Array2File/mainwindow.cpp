@@ -40,8 +40,23 @@ void MainWindow::on_ButtonStart_clicked()
 
     //Инциализация массива
     srand(time(NULL));
+    n = ui->spinBoxValue->value();
     int *array = MakeArray(n);
 
+
+    ui->tableWidget->setColumnCount(n);
+
+
+    QTableWidgetItem *cell;
+
+    for(int i = 0; i < n; i++)
+    {
+        if(ui->tableWidget->item(0,i) == nullptr)
+        {
+            cell = new QTableWidgetItem();
+            ui->tableWidget->setItem(0, i, cell);
+        }
+    }
 
     array = IncArray(array, n,
         [](int x, int y)->int {return rand();});
@@ -49,15 +64,9 @@ void MainWindow::on_ButtonStart_clicked()
     OutArrayInTextEdin(array, n,
                        [=](int Arr, int x)
                        {
-                            QTableWidgetItem *cell;
-
                             for(int i = 0; i < n; i++)
                             {
-                                if(ui->tableWidget->item(0,i) == nullptr)
-                                {
-                                    cell = new QTableWidgetItem();
-                                    ui->tableWidget->setItem(0, i, cell);
-                                }
+                                ui->tableWidget->item(0, i)->setText(QString::number(Arr));
                             }
                        });
 
@@ -79,7 +88,10 @@ void MainWindow::on_ButtonStart_clicked()
         OutArrayInTextEdin(array, n,
                            [=](int Arr, int i)
                            {
-
+                                for(int i = 0; i < n; i++)
+                                {
+                                    ui->tableWidget->item(0, i)->setText(QString::number(Arr));
+                                }
                            });
 
 
@@ -92,7 +104,10 @@ void MainWindow::on_ButtonStart_clicked()
         OutArrayInTextEdin(array, n,
                            [=](int Arr, int i)
                            {
-
+                                for(int i = 0; i < n; i++)
+                                {
+                                    ui->tableWidget->item(0, i)->setText(QString::number(Arr));
+                                }
                            });
 
         ArrFil.close();
@@ -119,8 +134,3 @@ void MainWindow::on_ButtonStart_clicked()
     delete[] array;
 }
 
-void MainWindow::on_spinBoxValue_valueChanged(int arg1)
-{
-    n = arg1;
-    ui->tableWidget->setColumnCount(n);
-}
