@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>641</width>
-    <height>320</height>
+    <height>444</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="ButtonStart">
     <property name="geometry">
      <rect>
-      <x>14</x>
-      <y>260</y>
+      <x>10</x>
+      <y>370</y>
       <width>611</width>
       <height>30</height>
      </rect>
@@ -102,35 +102,37 @@
      </item>
     </layout>
    </widget>
-   <widget class="QTextEdit" name="TextEFirstArray">
+   <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>70</y>
-      <width>104</width>
-      <height>181</height>
+      <x>20</x>
+      <y>90</y>
+      <width>601</width>
+      <height>71</height>
      </rect>
     </property>
    </widget>
-   <widget class="QTextEdit" name="TextESecondArray">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>70</y>
-      <width>104</width>
-      <height>181</height>
+      <x>200</x>
+      <y>290</y>
+      <width>291</width>
+      <height>22</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QTextEdit" name="TextEFileToArray">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>70</y>
-      <width>104</width>
-      <height>181</height>
-     </rect>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Кол-во эл в массиве - </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBoxValue"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

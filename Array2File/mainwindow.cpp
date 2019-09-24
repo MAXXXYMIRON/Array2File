@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->tableWidget->setRowCount(1);
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +40,6 @@ void MainWindow::on_ButtonStart_clicked()
 
     //Инциализация массива
     srand(time(NULL));
-    unsigned n = (rand() % 10) + 1;
     int *array = MakeArray(n);
 
 
@@ -46,10 +47,18 @@ void MainWindow::on_ButtonStart_clicked()
         [](int x, int y)->int {return rand();});
 
     OutArrayInTextEdin(array, n,
-                       [=](int Arr, int i)
+                       [=](int Arr, int x)
                        {
-                            ui->TextEFirstArray->append("Array[" + QString::number(i) + "] = " +
-                            QString::number(Arr));
+                            QTableWidgetItem *cell;
+
+                            for(int i = 0; i < n; i++)
+                            {
+                                if(ui->tableWidget->item(0,i) == nullptr)
+                                {
+                                    cell = new QTableWidgetItem();
+                                    ui->tableWidget->setItem(0, i, cell);
+                                }
+                            }
                        });
 
 
@@ -70,8 +79,7 @@ void MainWindow::on_ButtonStart_clicked()
         OutArrayInTextEdin(array, n,
                            [=](int Arr, int i)
                            {
-                                ui->TextESecondArray->append("Array[" + QString::number(i) + "] = " +
-                                QString::number(Arr));
+
                            });
 
 
@@ -84,8 +92,7 @@ void MainWindow::on_ButtonStart_clicked()
         OutArrayInTextEdin(array, n,
                            [=](int Arr, int i)
                            {
-                                ui->TextEFileToArray->append("Array[" + QString::number(i) + "] = " +
-                                QString::number(Arr));
+
                            });
 
         ArrFil.close();
@@ -110,4 +117,10 @@ void MainWindow::on_ButtonStart_clicked()
     }
 
     delete[] array;
+}
+
+void MainWindow::on_spinBoxValue_valueChanged(int arg1)
+{
+    n = arg1;
+    ui->tableWidget->setColumnCount(n);
 }
