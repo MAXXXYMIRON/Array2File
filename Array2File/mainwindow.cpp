@@ -68,6 +68,10 @@ void MainWindow::on_ButtonStart_clicked()
         }
     }
 
+    ui->TWFirstArr->horizontalHeader()->setDefaultSectionSize(20);
+    ui->TWFirstArr->verticalHeader()->setDefaultSectionSize(20);
+
+
     //Вывод массива
     OutArrayInTextEdin(array, n,
        [=](int Arr, int x)
