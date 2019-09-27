@@ -17,10 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    ui->TWFirstArr->setRowCount(1);
-    ui->TWSecondArr->setRowCount(1);
-    ui->TWFileArr->setRowCount(1);
 }
 
 MainWindow::~MainWindow()
@@ -28,55 +24,67 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void OutArrayInTextEdin(int *Arr, unsigned n, function<void(int, int)> Out)
+//Лямбда выражение для вывода в TableWidget
+void OutMatrixInTW(int **Arr, unsigned Row, unsigned Col, function<void(int, int, int)> Out)
 {
-    for(int i = 0; i < n; i++)
-    {
-        Out(Arr[i], i);
-    }
+    for(int i = 0; i < Row; i++)
+        for(int j = 0; j < Col; j++)
+        {
+           Out(Arr[i][j], i, j);
+        }
 }
+
+
 
 void MainWindow::on_ButtonStart_clicked()
 {
     setlocale(0, "");
 
-    //Инциализация массива
+    //Создание и инциализация массива
     srand(time(NULL));
 
-    n = ui->spinBoxValue->value();//Берём значение из SpinBox'a
-    int *array = MakeArray(n);
+    Row = ui->spinBoxRow->value();
+    Col = ui->spinBoxCol->value();
 
-    array = IncArray(array, n,
-        [](int x, int y)->int {return rand() % 10;});
+    Matrix = makeMatrix(Row, Col);
+    Matrix = initMatrix(Matrix, Row, Col,
+                        [](int x, int y){return rand() % 10;});
 
 
-    ui->TWFirstArr->setColumnCount(n);
-    ui->TWSecondArr->setColumnCount(n);
-    ui->TWFileArr->setColumnCount(n);
+
+    //Создание ячеек TableWidget
+    /////////////////////////////////////////////////////
+    ui->TWFirstArr->setColumnCount(Col);
+    ui->TWSecondArr->setColumnCount(Col);
+    ui->TWFileArr->setColumnCount(Col);
+    ui->TWFirstArr->setRowCount(Row);
+    ui->TWSecondArr->setRowCount(Row);
+    ui->TWFileArr->setRowCount(Row);
+
     QTableWidgetItem *cell;
-
-    for(int i = 0; i < n; i++)
+    for(int i = 0; i < Col; i++)
     {
-        if(ui->TWFirstArr->item(0,i) == nullptr)
+        for(int j = 0; j < Row; j++)
         {
-            cell = new QTableWidgetItem();
-            ui->TWFirstArr->setItem(0, i, cell);
-            cell = new QTableWidgetItem();
-            ui->TWSecondArr->setItem(0, i, cell);
-            cell = new QTableWidgetItem();
-            ui->TWFileArr->setItem(0, i, cell);
+            if(ui->TWFirstArr->item(j,i) == nullptr)
+            {
+                cell = new QTableWidgetItem();
+                ui->TWFirstArr->setItem(j, i, cell);
+                cell = new QTableWidgetItem();
+                ui->TWSecondArr->setItem(j, i, cell);
+                cell = new QTableWidgetItem();
+                ui->TWFileArr->setItem(j, i, cell);
+            }
         }
     }
-
-    ui->TWFirstArr->horizontalHeader()->setDefaultSectionSize(20);
-    ui->TWFirstArr->verticalHeader()->setDefaultSectionSize(20);
+    /////////////////////////////////////////////////////
 
 
-    //Вывод массива
-    OutArrayInTextEdin(array, n,
-       [=](int Arr, int x)
+    //Вывод матрицы
+    OutMatrixInTW(Matrix, Row, Col,
+       [=](int Arr, int i, int j)
        {
-            ui->TWFirstArr->item(0, x)->setText(QString::number(Arr));
+            ui->TWFirstArr->item(i, j)->setText(QString::number(Arr));
        });
 
 
@@ -87,18 +95,19 @@ void MainWindow::on_ButtonStart_clicked()
 
     try
     {
-        arrayToFile(array, n, ArrFil);
+        void matrixTpFile(int** Matrix, unsigned Row, unsigned Col, ofstream& ArrFil);
         ArrFil.close();
 
 
-        //Изменяем массив
-        array = IncArray(array, n,
-            [](int x, int y)->int {return rand() % 10;});
+        //Изменяем матрицу
+        Matrix = initMatrix(Matrix, Row, Col,
+                            [](int x, int y){return rand() % 10;});
 
-        OutArrayInTextEdin(array, n,
-           [=](int Arr, int x)
+        //Вывод матрицы
+        OutMatrixInTW(Matrix, Row, Col,
+           [=](int Arr, int i, int j)
            {
-                ui->TWSecondArr->item(0, x)->setText(QString::number(Arr));
+                ui->TWSecondArr->item(i, j)->setText(QString::number(Arr));
            });
 
 
@@ -109,10 +118,11 @@ void MainWindow::on_ButtonStart_clicked()
 
         array = fileToArray(ArrFil);
 
-        OutArrayInTextEdin(array, n,
-           [=](int Arr, int x)
+        //Вывод матрицы
+        OutMatrixInTW(Matrix, Row, Col,
+           [=](int Arr, int i, int j)
            {
-                ui->TWFileArr->item(0, x)->setText(QString::number(Arr));
+                ui->TWFileArr->item(i, j)->setText(QString::number(Arr));
            });
 
         ArrFil.close();
@@ -135,6 +145,6 @@ void MainWindow::on_ButtonStart_clicked()
         }
     }
 
-    delete[] array;
+    Matrix = delMatrix(Matrix, Row, Col);
 }
 

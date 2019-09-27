@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="ButtonStart">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>370</y>
+      <x>110</x>
+      <y>380</y>
       <width>611</width>
       <height>30</height>
      </rect>
@@ -36,85 +36,122 @@
      <string>Запуск</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>340</y>
-      <width>271</width>
-      <height>22</height>
+      <x>110</x>
+      <y>330</y>
+      <width>611</width>
+      <height>24</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Кол-во эл в массиве - </string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Кол-во строк -</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinBoxRow"/>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBoxValue"/>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Кол - во столбцов -</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinBoxCol"/>
+       </item>
+      </layout>
      </item>
     </layout>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>141</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Первый массив    -   </string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>160</y>
-      <width>141</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Второй массив      -</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>260</y>
-      <width>141</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Первый массив из файла -</string>
-    </property>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>20</y>
-      <width>601</width>
-      <height>291</height>
+      <x>270</x>
+      <y>50</y>
+      <width>258</width>
+      <height>213</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTableWidget" name="TWFirstArr"/>
-     </item>
-     <item>
-      <widget class="QTableWidget" name="TWSecondArr"/>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Первый массив из файла</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QTableWidget" name="TWFileArr"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>258</width>
+      <height>213</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Первый массив  </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="TWFirstArr"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>0</y>
+      <width>258</width>
+      <height>213</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Второй массив  </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="TWSecondArr">
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>20</number>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>20</number>
+       </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>20</number>
+       </attribute>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>20</number>
+       </attribute>
+      </widget>
      </item>
     </layout>
    </widget>

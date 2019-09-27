@@ -19,8 +19,8 @@ private slots:
     void on_ButtonStart_clicked();
 
 private:
-    unsigned n;
-    int *array;
+    unsigned Row, Col;
+    int **Matrix;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
