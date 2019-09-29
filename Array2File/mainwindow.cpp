@@ -95,14 +95,12 @@ void MainWindow::on_ButtonStart_clicked()
 
     try
     {
-        void matrixTpFile(int** Matrix, unsigned Row, unsigned Col, ofstream& ArrFil);
-        ArrFil.close();
+        matrixTpFile(Matrix, Row, Col, ArrFil);
 
 
         //Изменяем матрицу
         Matrix = initMatrix(Matrix, Row, Col,
                             [](int x, int y){return rand() % 10;});
-
         //Вывод матрицы
         OutMatrixInTW(Matrix, Row, Col,
            [=](int Arr, int i, int j)
@@ -116,7 +114,7 @@ void MainWindow::on_ButtonStart_clicked()
         ifstream ArrFil;
         ArrFil.open("C:\Array_file.txt");
 
-        array = fileToArray(ArrFil);
+        Matrix = fileToMatrix(ArrFil);
 
         //Вывод матрицы
         OutMatrixInTW(Matrix, Row, Col,
@@ -124,8 +122,6 @@ void MainWindow::on_ButtonStart_clicked()
            {
                 ui->TWFileArr->item(i, j)->setText(QString::number(Arr));
            });
-
-        ArrFil.close();
     }
 
 
